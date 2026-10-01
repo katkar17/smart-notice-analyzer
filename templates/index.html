@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart College Notice Analyzer</title>
+
+  <!-- Bootstrap 5 (loaded from the internet / CDN) makes the page responsive -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet">
+  <!-- Our own small stylesheet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <!-- Top heading bar -->
+  <header class="app-header text-center">
+    <h1>📘 Smart College Notice Analyzer</h1>
+    <p class="mb-0">Paste a notice or upload a file, then analyze it.</p>
+  </header>
+
+  <main class="container my-4">
+
+    <!-- Show an error message if one was sent from app.py -->
+    {% if error %}
+      <div class="alert alert-warning" role="alert">{{ error }}</div>
+    {% endif %}
+
+    <div class="card shadow-sm">
+      <div class="card-body">
+
+        <!-- One form handles BOTH pasted text and file upload.
+             enctype="multipart/form-data" is required so files can be sent. -->
+        <form action="/analyze" method="POST" enctype="multipart/form-data">
+
+          <!-- Paste area -->
+          <div class="mb-3">
+            <label for="notice_text" class="form-label fw-bold">
+              Paste your notice here
+            </label>
+            <textarea
+              class="form-control"
+              id="notice_text"
+              name="notice_text"
+              rows="7"
+              placeholder="Paste the college notice text..."></textarea>
+          </div>
+
+          <div class="text-center text-muted my-2">— OR —</div>
+
+          <!-- File upload -->
+          <div class="mb-3">
+            <label for="notice_file" class="form-label fw-bold">
+              Upload a .txt or .pdf notice
+            </label>
+            <input
+              class="form-control"
+              type="file"
+              id="notice_file"
+              name="notice_file"
+              accept=".txt,.pdf">
+          </div>
+
+          <!-- Buttons -->
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Analyze Notice</button>
+            <!-- "Try sample" fills the text box using a little JavaScript -->
+            <button type="button" class="btn btn-outline-secondary" onclick="fillSample()">
+              Try sample notice
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- The sample notice text is stored safely here for JavaScript to use -->
+  <script id="sample-data" type="application/json">{{ sample | tojson }}</script>
+  <script>
+    // Copies the sample notice into the text box when the button is clicked.
+    function fillSample() {
+      const sample = JSON.parse(document.getElementById("sample-data").textContent);
+      document.getElementById("notice_text").value = sample;
+    }
+  </script>
+</body>
+</html>

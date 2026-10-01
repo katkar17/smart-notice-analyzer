@@ -1,0 +1,15 @@
+# Smart College Notice Analyzer - Python dependencies
+# (Full list for the whole project so you only install once.)
+# Phase 1 only actually needs: Flask and pypdf.
+#
+# NOTE: These versions all provide prebuilt packages ("wheels") for
+# Python 3.13, so nothing has to be compiled from source on Windows.
+
+Flask>=3.0
+pypdf>=4.2
+nltk>=3.9
+spacy>=3.8.2
+scikit-learn>=1.6.0
+wordcloud>=1.9.4
+matplotlib>=3.9.2
+numpy>=2.0
